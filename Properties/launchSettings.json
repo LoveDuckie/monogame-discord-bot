@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MonoGameDiscordBot": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+version: "3.9"  # optional since v1.27.0
+services:
+    bot:
+        build: .
+        container_name: '${SERVICE_NAME}-bot'
+    redis:
+        image: redis:6.2.3-alpine
+        container_name: '${SERVICE_NAME}-redis'
+    mongodb:
+        image: mongo:4.4.6-bionic
+        container_name: '${SERVICE_NAME}-mongodb'
+    mongo-express:
+        image: 'mongo-express:0.54.0'
+        container_name: '${SERVICE_NAME}-mongo-express'
