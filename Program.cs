@@ -30,15 +30,15 @@ namespace MonoGameDiscordBot
                 if (string.IsNullOrEmpty(environmentName))
                 	throw new ArgumentNullException(nameof(environmentName),"The value \"environmentName\" is invalid or null");
 
-                configBuilder.AddJsonFile(Constants.GetAppConfigJsonFileName(environmentName));
-
+                configBuilder.AddJsonFile(Constants.DefaultAppConfigFileName, optional: true);
+                configBuilder.AddJsonFile(Constants.GetAppConfigJsonFileName(environmentName), optional: true);
             })
             .ConfigureHostConfiguration((configBuilder) =>
             {
                 configBuilder.SetBasePath(Directory.GetCurrentDirectory());
                 configBuilder.AddCommandLine(args);
                 configBuilder.AddEnvironmentVariables(Constants.EnvironmentVariablePrefix);
-                configBuilder.AddJsonFile(Constants.HostConfigFileName, true);
+                configBuilder.AddJsonFile(Constants.HostConfigFileName, optional: true);
                 configBuilder.SetFileLoadExceptionHandler((exceptionContext) => {
                 });
             })
@@ -53,7 +53,9 @@ namespace MonoGameDiscordBot
             })
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddHostedService<MonoGameDiscordBotService>().Configure<DiscordOptions>(nameof(DiscordOptions), hostContext.Configuration);
+                services.AddOptions();
+                services.Configure<DiscordOptions>(hostContext.Configuration.GetSection(nameof(DiscordOptions)));
+                services.AddHostedService<MonoGameDiscordBotService>();
             });
         }
         

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MonoGameDiscordBot
+﻿namespace MonoGameDiscordBot
 {
+    /// <summary>
+    ///     
+    /// </summary>
     public static class Constants
     {
         #region Constants
@@ -23,6 +20,11 @@ namespace MonoGameDiscordBot
         ///     
         /// </summary>
         public const string AppConfigFileName = "appconfig";
+
+        /// <summary>
+        ///     
+        /// </summary>
+        public static readonly string DefaultAppConfigFileName = $"{AppConfigFileName}.json";
         #endregion
 
         #region Static Methods
@@ -31,20 +33,14 @@ namespace MonoGameDiscordBot
         /// </summary>
         /// <param name="environmentName"></param>
         /// <returns>Returns the newly generated string from the environment name</returns>
-        public static string GetHostConfigJsonFileName(string environmentName)
-        {
-            return $"{HostConfigFileName}.{environmentName}.json";
-        }
+        public static string GetHostConfigJsonFileName(string environmentName) => $"{HostConfigFileName}.{environmentName}.json";
 
         /// <summary>
         ///     
         /// </summary>
         /// <param name="environmentName"></param>
         /// <returns>Returns the newly generated string from the environment name</returns>
-        public static string GetAppConfigJsonFileName(string environmentName)
-        {
-            return $"{AppConfigFileName}.{environmentName}.json";
-        } 
+        public static string GetAppConfigJsonFileName(string environmentName) => $"{AppConfigFileName}.{environmentName}.json";
         #endregion
     }
 }

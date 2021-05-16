@@ -11,7 +11,7 @@ using MonoGameDiscordBot.Configuration.Options;
 namespace MonoGameDiscordBot.Services
 {
     /// <summary>
-    ///     
+    ///     Hosted service for the Discord bot and all its functionality
     /// </summary>
     public sealed class MonoGameDiscordBotService : IHostedService, IDisposable
     {
@@ -129,7 +129,6 @@ namespace MonoGameDiscordBot.Services
         /// </summary>
         private void OnStopped()
         {
-
             ServiceLogger.LogInformation("Stopped");
         }
 
@@ -142,19 +141,134 @@ namespace MonoGameDiscordBot.Services
         }
         #endregion
 
-        
-
         #region Methods
         /// <summary>
-        ///     
+        ///     The asynchronous method that is used for starting the hosted service
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            DiscordClient.ChannelCreated += DiscordClient_ChannelCreated;
+            DiscordClient.ChannelDestroyed += DiscordClient_ChannelDestroyed;
+            DiscordClient.CurrentUserUpdated += DiscordClient_CurrentUserUpdated;
+            DiscordClient.Disconnected += DiscordClient_Disconnected;
+            DiscordClient.Connected += DiscordClient_Connected;
+            DiscordClient.GuildAvailable += DiscordClient_GuildAvailable;
+            DiscordClient.GuildUpdated += DiscordClient_GuildUpdated;
+            DiscordClient.GuildMemberUpdated += DiscordClient_GuildMemberUpdated;
+            DiscordClient.MessageDeleted += DiscordClient_MessageDeleted;
+            DiscordClient.MessageReceived += DiscordClient_MessageReceived;
+            DiscordClient.MessageUpdated += DiscordClient_MessageUpdated;
+            DiscordClient.MessagesBulkDeleted += DiscordClient_MessagesBulkDeleted;
+
             await DiscordClient.LoginAsync(Discord.TokenType.Bot, DiscordOptions.Value.ClientKey, true);
             await DiscordClient.StartAsync();
         }
+
+        private Task DiscordClient_MessagesBulkDeleted(System.Collections.Generic.IReadOnlyCollection<Discord.Cacheable<Discord.IMessage, ulong>> arg1, ISocketMessageChannel arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Task DiscordClient_MessageUpdated(Discord.Cacheable<Discord.IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Task DiscordClient_MessageReceived(SocketMessage arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Task DiscordClient_MessageDeleted(Discord.Cacheable<Discord.IMessage, ulong> arg1, ISocketMessageChannel arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region Events
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        private Task DiscordClient_GuildMemberUpdated(SocketGuildUser arg1, SocketGuildUser arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        private Task DiscordClient_GuildUpdated(SocketGuild arg1, SocketGuild arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task DiscordClient_GuildAvailable(SocketGuild arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     The event callback for when the Discord client has connected
+        /// </summary>
+        /// <returns></returns>
+        private Task DiscordClient_Connected()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     The event callback for when the Discord client has disconnected
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task DiscordClient_Disconnected(Exception arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        private Task DiscordClient_CurrentUserUpdated(SocketSelfUser arg1, SocketSelfUser arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task DiscordClient_ChannelDestroyed(SocketChannel arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        private Task DiscordClient_ChannelCreated(SocketChannel arg)
+        {
+            throw new NotImplementedException();
+        } 
+        #endregion
 
         /// <summary>
         ///     

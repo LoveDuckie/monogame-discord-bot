@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Containers\mongodb\" />
     <Folder Include="Logging\" />
   </ItemGroup>
 

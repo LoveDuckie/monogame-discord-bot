@@ -8,8 +8,14 @@ namespace MonoGameDiscordBot.Configuration.Options
 {
     public class DiscordOptions
     {
+        /// <summary>
+        ///     
+        /// </summary>
         public string ClientId { get; set; }
 
+        /// <summary>
+        ///     
+        /// </summary>
         public string ClientKey { get; set; }
     }
 }
