@@ -9,13 +9,16 @@ using MonoGameDiscordBot.Services;
 
 namespace MonoGameDiscordBot
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class Program
     {
         /// <summary>
         ///     Create the host builder.
         /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <param name="args">The command-line arguments.</param>
+        /// <returns>Returns the generated host builder.</returns>
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
