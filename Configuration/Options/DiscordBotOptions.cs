@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace MonoGameDiscordBot.Configuration.Options
 {
-    public class DiscordBotOptions
+    public sealed class DiscordBotOptions
     {
+        #region Fields
+        /// <summary>
+        ///     
+        /// </summary>
+        private string token; 
+        #endregion
+
+        #region Properties
+        /// <summary>
+        ///     
+        /// </summary>
+        public string Token { get => token; set => token = value; } 
+        #endregion
     }
 }

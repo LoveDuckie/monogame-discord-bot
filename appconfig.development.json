@@ -5,5 +5,14 @@
       "Microsoft": "Warning",
       "Microsoft.Hosting.Lifetime": "Information"
     }
+  },
+  "DiscordOptions": {
+    "UseSystemClock" : true
+  },
+  "DiscordBotOptions": {
+    "Token": "NzcyODUxNDY1MTQwMTc0ODY5.X6AsBA.FGScSBrLQoQohREqwzLlIjsbqpY"
+  },
+  "RedisOptions": {
+    "Configuration": "127.0.0.1:6380,DefaultDatabase=1"
   }
 }

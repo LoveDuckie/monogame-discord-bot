@@ -5,6 +5,24 @@
     },
     "Docker": {
       "commandName": "Docker"
+    },
+    "MonoGameDiscordBot-Development": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "MonoGameDiscordBot-Production": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Production"
+      }
+    },
+    "MonoGameDiscordBot-Staging": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Staging"
+      }
     }
   }
 }

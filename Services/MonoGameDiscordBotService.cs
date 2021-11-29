@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +15,7 @@ namespace MonoGameDiscordBot.Services
     /// <summary>
     ///     Hosted service for the Discord bot and all its functionality
     /// </summary>
-    public sealed class MonoGameDiscordBotService : IHostedService, IDisposable
+    public sealed partial class MonoGameDiscordBotService : IHostedService, IDisposable
     {
         #region Fields
         /// <summary>
@@ -45,9 +47,16 @@ namespace MonoGameDiscordBot.Services
         /// 
         /// </summary>
         private IOptions<DiscordOptions> discordOptions;
+        private IOptions<DiscordBotOptions> discordBotOptions;
+        private bool isDisposed;
         #endregion
 
         #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsDisposed { get => isDisposed; private set => isDisposed = value; }
+
         /// <summary>
         ///     The lifetime.
         /// </summary>
@@ -64,7 +73,7 @@ namespace MonoGameDiscordBot.Services
         public ILogger ServiceLogger { get => serviceLogger; private set => serviceLogger = value; }
 
         /// <summary>
-        ///     The cache
+        ///     The cache.
         /// </summary>
         public IDistributedCache Cache { get => cache; private set => cache = value; }
 
@@ -74,12 +83,25 @@ namespace MonoGameDiscordBot.Services
         public IOptions<DiscordOptions> DiscordOptions { get => discordOptions; private set => discordOptions = value; }
 
         /// <summary>
-        /// 
+        ///     The options for the bot.
+        /// </summary>
+        public IOptions<DiscordBotOptions> DiscordBotOptions { get => discordBotOptions; private set => discordBotOptions = value; }
+
+        /// <summary>
+        ///     The client used for connecting to Discord.
         /// </summary>
         public DiscordSocketClient DiscordClient { get => discordClient; set => discordClient = value; }
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// 
+        /// </summary>
+        public MonoGameDiscordBotService()
+        {
+
+        }
+
         /// <summary>
         ///     The DI based constructor
         /// </summary>
@@ -87,18 +109,22 @@ namespace MonoGameDiscordBot.Services
         /// <param name="appEnvironment"></param>
         /// <param name="logger"></param>
         /// <param name="cache"></param>
-        public MonoGameDiscordBotService(IHostApplicationLifetime appLifeTime, 
-            IHostEnvironment appEnvironment, 
-            ILogger<MonoGameDiscordBotService> logger, 
-            IDistributedCache cache, 
-            IOptions<DiscordOptions> discordOptions)
+        /// <param name="discordOptions"></param>
+        /// <param name="discordBotOptions"></param>
+        public MonoGameDiscordBotService(IHostApplicationLifetime appLifeTime,
+            IHostEnvironment appEnvironment,
+            ILogger<MonoGameDiscordBotService> logger,
+            IDistributedCache cache,
+            IOptions<DiscordOptions> discordOptions,
+            IOptions<DiscordBotOptions> discordBotOptions
+            ) : this()
         {
             AppLifeTime = appLifeTime ?? throw new ArgumentNullException(nameof(appLifeTime));
             AppEnvironment = appEnvironment ?? throw new ArgumentNullException(nameof(appEnvironment));
             ServiceLogger = logger ?? throw new ArgumentNullException(nameof(logger));
             Cache = cache ?? throw new ArgumentNullException(nameof(cache));
             DiscordOptions = discordOptions ?? throw new ArgumentNullException(nameof(discordOptions));
-
+            DiscordBotOptions = discordBotOptions ?? throw new ArgumentNullException(nameof(discordBotOptions));
             DiscordClient = new DiscordSocketClient(new DiscordSocketConfig()
             {
                 UseSystemClock = true
@@ -109,6 +135,9 @@ namespace MonoGameDiscordBot.Services
             AppLifeTime.ApplicationStopping.Register(OnStopping);
         }
 
+        /// <summary>
+        ///     
+        /// </summary>
         ~MonoGameDiscordBotService()
         {
             Dispose(false);
@@ -162,31 +191,55 @@ namespace MonoGameDiscordBot.Services
             DiscordClient.MessageUpdated += DiscordClient_MessageUpdated;
             DiscordClient.MessagesBulkDeleted += DiscordClient_MessagesBulkDeleted;
 
-            await DiscordClient.LoginAsync(Discord.TokenType.Bot, DiscordOptions.Value.ClientKey, true);
+            await DiscordClient.LoginAsync(TokenType.Bot, DiscordBotOptions.Value.Token, true);
             await DiscordClient.StartAsync();
         }
 
-        private Task DiscordClient_MessagesBulkDeleted(System.Collections.Generic.IReadOnlyCollection<Discord.Cacheable<Discord.IMessage, ulong>> arg1, ISocketMessageChannel arg2)
+        #region Events
+        /// <summary>
+        ///     Invoked when messages are deleted in bulk.
+        /// </summary>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        private Task DiscordClient_MessagesBulkDeleted(IReadOnlyCollection<Cacheable<IMessage, ulong>> arg1, ISocketMessageChannel arg2)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        private Task DiscordClient_MessageUpdated(Discord.Cacheable<Discord.IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        private Task DiscordClient_MessageUpdated(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
         private Task DiscordClient_MessageReceived(SocketMessage arg)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        private Task DiscordClient_MessageDeleted(Discord.Cacheable<Discord.IMessage, ulong> arg1, ISocketMessageChannel arg2)
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        private Task DiscordClient_MessageDeleted(Cacheable<IMessage, ulong> arg1, ISocketMessageChannel arg2)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        #region Events
         /// <summary>
         ///     
         /// </summary>
@@ -195,7 +248,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_GuildMemberUpdated(SocketGuildUser arg1, SocketGuildUser arg2)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -206,7 +259,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_GuildUpdated(SocketGuild arg1, SocketGuild arg2)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -216,7 +269,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_GuildAvailable(SocketGuild arg)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -225,7 +278,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_Connected()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -235,7 +288,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_Disconnected(Exception arg)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -246,7 +299,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_CurrentUserUpdated(SocketSelfUser arg1, SocketSelfUser arg2)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -256,7 +309,7 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_ChannelDestroyed(SocketChannel arg)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -266,8 +319,8 @@ namespace MonoGameDiscordBot.Services
         /// <returns></returns>
         private Task DiscordClient_ChannelCreated(SocketChannel arg)
         {
-            throw new NotImplementedException();
-        } 
+            return Task.CompletedTask;
+        }
         #endregion
 
         /// <summary>
@@ -283,17 +336,16 @@ namespace MonoGameDiscordBot.Services
         /// <summary>
         ///     
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">Boolean value indicating if we are explicitly disposing</param>
         public void Dispose(bool disposing)
         {
-            if (disposing)
+            if (IsDisposed)
             {
+                return;
+            }
 
-            }
-            else
-            {
-                DiscordClient.Dispose();
-            }
+            DiscordClient?.Dispose();
+            IsDisposed = true;
         }
 
         public void Dispose()

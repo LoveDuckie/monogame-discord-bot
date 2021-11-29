@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MonoGameDiscordBot.Configuration.Options;
 using MonoGameDiscordBot.Services;
 
@@ -56,8 +57,31 @@ namespace MonoGameDiscordBot
             })
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddOptions();
+                if (hostContext.HostingEnvironment.IsDevelopment())
+                {
+                    services.AddDistributedMemoryCache((options) =>
+                    {
+                    });
+                }
+                else
+                {
+                    IConfigurationSection redisConfigSection = hostContext.Configuration.GetSection(nameof(RedisOptions));
+
+                    services.AddStackExchangeRedisCache(options =>
+                    {
+                        options.InstanceName = "";
+
+                        options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions()
+                        {
+                             
+                        };
+                    });
+                }
+
                 services.Configure<DiscordOptions>(hostContext.Configuration.GetSection(nameof(DiscordOptions)));
+                services.Configure<DiscordBotOptions>(hostContext.Configuration.GetSection(nameof(DiscordBotOptions)));
+                services.Configure<RedisOptions>(hostContext.Configuration.GetSection(nameof(RedisOptions)));
+                services.AddOptions();
                 services.AddHostedService<MonoGameDiscordBotService>();
             });
         }

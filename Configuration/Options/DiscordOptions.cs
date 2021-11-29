@@ -6,16 +6,50 @@ using System.Threading.Tasks;
 
 namespace MonoGameDiscordBot.Configuration.Options
 {
-    public class DiscordOptions
+    public sealed class DiscordOptions
     {
+        #region Fields
+        /// <summary>
+        ///     Use the system clock
+        /// </summary>
+        private bool useSystemClock;
+
+        /// <summary>
+        ///     The size of the message cache
+        /// </summary>
+        private int messageCacheSize;
+        
+        /// <summary>
+        ///     The host of the gateway.
+        /// </summary>
+        private string gatewayHost;
+        
+        /// <summary>
+        ///     The timeout for the handler.
+        /// </summary>
+        private int? handlerTimeout;
+        #endregion
+
+        #region Properties
         /// <summary>
         ///     
         /// </summary>
-        public string ClientId { get; set; }
+        public bool UseSystemClock { get => useSystemClock; set => useSystemClock = value; }
 
         /// <summary>
         ///     
         /// </summary>
-        public string ClientKey { get; set; }
+        public int MessageCacheSize { get => messageCacheSize; set => messageCacheSize = value; }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        public string GatewayHost { get => gatewayHost; set => gatewayHost = value; }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        public int? HandlerTimeout { get => handlerTimeout; set => handlerTimeout = value; } 
+        #endregion
     }
 }
